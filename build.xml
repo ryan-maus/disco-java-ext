@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!--
+Copyright (c) 2010, Allston Trading, LLC
+All rights reserved.
+ 
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+ 
+ * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+ 
+ * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+ 
+ * Neither the name of the author nor the names of its contributors
+      may be used to endorse or promote products derived from this
+      software without specific prior written permission.
+ 
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+/-->
+
+<project basedir="." default="all" name="disco-java-ext">
+	<property name="artifactId" value="disco-java-ext"/>
+	<property name="build.source" value="src"/>
+	<property name="build.target" value="bin"/>
+	<property name="artifact.target" value="."/>
+	<property name="debuglevel" value="source,lines,vars"/>
+	<property name="java.target" value="1.6"/>
+	<property name="java.source" value="1.6"/>
+
+	<target name="clean">
+		<delete dir="${build.target}"/>
+		<delete file="${artifact.target}/${artifactId}.jar"/>
+	</target>
+
+	<target name="init">
+		<mkdir dir="${build.target}"/>
+                <mkdir dir="${build.target}"/>
+                <copy includeemptydirs="false" todir="${build.target}">
+                        <fileset dir="${build.source}" excludes="**/${build.target}/**"/>
+                </copy>
+	</target>
+
+        <target name="compile" depends="clean, init">
+                <javac debug="true" debuglevel="${debuglevel}" destdir="${build.target}" source="${java.source}" target="${java.target}">
+                        <src path="${build.source}"/>
+                </javac>
+        </target>
+
+        <target name="dist" depends="compile">
+		<echo message="Distributing ${artifactId} to ${artifact.target}"/>
+                <tstamp><format property="DSTAMP" pattern="dd-MMM-yy HH:mm:ss" /></tstamp>
+                <mkdir dir="${artifact.target}"/>
+                <jar jarfile="${artifact.target}/${artifactId}.jar" basedir="${build.target}">
+                        <manifest>
+                                <attribute name="Built-By" value="${user.name}"/>
+                                <attribute name="Implementation-Title" value="${ant.project.name}"/>
+                                <attribute name="Jar-Name" value="${artifactId}"/>
+                                <attribute name="Jar-Date" value="${DSTAMP}"/>
+                                <attribute name="Java-Version" value="${ant.java.version}"/>
+                                <attribute name="Ant-Version" value="${ant.version}"/>
+                        </manifest>
+                </jar>
+	</target>
+
+	<target name="all" depends="compile, dist"/>
+
+</project>
