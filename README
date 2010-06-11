@@ -1,0 +1,26 @@
+disco-java-ext is a Java implementation of the Disco external interface
+(http://discoproject.org/doc/external.html).  I attempted to mimic the Python
+interface for map and reduce functions in the MapFunction and ReduceFunction 
+abstract classes.
+
+Running wordcount:
+1.  Git the source
+2.  Run "ant" to build the jar.  Sun Java 1.6 is the only dependency.
+3.  Distribute the jar to all the nodes in your cluster.  I prefer to use
+	NFS or DFS, either way the path needs to be the same on all nodes.
+4.  Modify java_map.sh and java_reduce.sh so that OS_DISCO is the path to
+	the jar you just distributed.
+5.  Modify RunDiscoJavaExt.py to point to your master (var "master_node")
+6.  Run "python RunDiscoJavaExt.py"
+
+
+Running a custom map/reduce:
+1.  Do steps 1-5 above to get a working wordcount
+2.  Implement your own rmaus.disco.external.MapFunction and ReduceFunction
+3.  Jar your map/reduce functions and distribute them to the nodes
+	(similar to #3 above)
+4.  Modify java_map.sh and java_reduce.sh so your launch classpath includes
+	your custom map/reduce jar.
+5.  Modify RunDiscoJavaExt.py vars "map_class" and "reduce_class" to point
+	to your custom map/reduce classes (instead of the wordcount classes)
+6.  Run "python runDiscoJavaExt.py"
