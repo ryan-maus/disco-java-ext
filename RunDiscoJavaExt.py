@@ -34,7 +34,7 @@ from disco.core import Disco, result_iterator
 import cserver, disco
 
 job_name = "rmaus_java_disco"
-master_node = "http://discomaster-eq-02:8989"
+master_node = "disco://localhost" # Put your master here
 url_seed = "javaDisco"
 ext_map = "java_map.sh"
 ext_reduce = "java_reduce.sh"
