@@ -33,23 +33,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from disco.core import Disco, result_iterator
 import cserver, disco
 
-job_name = "rmaus_java_disco"
-master_node = "disco://localhost" # Put your master here
-url_seed = "javaDisco"
-ext_map = "java_map.sh"
-ext_reduce = "java_reduce.sh"
+ext_map_exec = "java_map.sh"
+ext_reduce_exec = "java_reduce.sh"
 map_class = "rmaus.disco.external.sample.WordCountMap"
 reduce_class = "rmaus.disco.external.sample.WordCountReduce"
 
 input_strings = ["foo bar baz foo foo\nfoo baz", "baz baz", "foo\nbar\nbaz"]
 cserver.run_server(input_strings, 9444)
 
-job = Disco(master_node).new_job(
-        name = job_name,
-        input = cserver.makeurl([url_seed] * len(input_strings)),
+job = Disco("disco://localhost").new_job(
+        name = "java_wordcount",
+        input = cserver.makeurl(["url_seed"] * len(input_strings)),
 	ext_params = { "mapFunction" : map_class, "reduceFunction" : reduce_class, "testKey" : "testValue" },
-        map = disco.util.external([ext_map]),
-        reduce = disco.util.external([ext_reduce]))
+        map = disco.util.external([ext_map_exec]),
+        reduce = disco.util.external([ext_reduce_exec]))
 
 results = job.wait()
 
