@@ -10,7 +10,7 @@ Running wordcount:
 	NFS or DFS, either way the path needs to be the same on all nodes.
 4.  Modify java_map.sh and java_reduce.sh so that OS_DISCO is the path to
 	the jar you just distributed.
-5.  Modify RunDiscoJavaExt.py to point to your master (var "master_node")
+5.  Modify RunDiscoJavaExt.py to point to your Disco master
 6.  Run "python RunDiscoJavaExt.py"
 
 
