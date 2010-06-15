@@ -60,7 +60,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 </javac>
         </target>
 
-        <target name="dist" depends="compile">
+        <target name="archive" depends="compile">
 		<echo message="Distributing ${artifactId} to ${artifact.target}"/>
                 <tstamp><format property="DSTAMP" pattern="dd-MMM-yy HH:mm:ss" /></tstamp>
                 <mkdir dir="${artifact.target}"/>
@@ -76,6 +76,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 </jar>
 	</target>
 
-	<target name="all" depends="compile, dist"/>
+	<target name="all" depends="compile, archive"/>
 
 </project>
