@@ -31,24 +31,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 from disco.core import Disco, result_iterator
-import cserver, disco
+from disco.util import external
 
 ext_map_exec = "java_map.sh"
 ext_reduce_exec = "java_reduce.sh"
 map_class = "rmaus.disco.external.sample.WordCountMap"
 reduce_class = "rmaus.disco.external.sample.WordCountReduce"
 
-input_strings = ["foo bar baz foo foo\nfoo baz", "baz baz", "foo\nbar\nbaz"]
-cserver.run_server(input_strings, 9444)
-
-job = Disco("disco://localhost").new_job(
+job = Disco("http://discomaster-eq-02:8989").new_job(
         name = "java_wordcount",
-        input = cserver.makeurl(["url_seed"] * len(input_strings)),
+	input = ["raw://foo", "raw://bar", "raw://foo"],
 	ext_params = { "mapFunction" : map_class, "reduceFunction" : reduce_class, "testKey" : "testValue" },
-        map = disco.util.external([ext_map_exec]),
-        reduce = disco.util.external([ext_reduce_exec]))
+        map = external([ext_map_exec]),
+        reduce = external([ext_reduce_exec]))
 
-results = job.wait()
+results = job.wait(show=True)
 
 for result in sorted(result_iterator(results), key=lambda x:x[1]):
 	print result
