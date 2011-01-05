@@ -59,8 +59,7 @@ public class RuntimeUtils {
 	 * @throws IOException
 	 * @throws NumberFormatException
 	 */
-	public static Map<String, String> readParameters() throws IOException,
-			NumberFormatException {
+	public static Map<String, String> readParameters() throws IOException, NumberFormatException {
 		String sizeStr = "";
 		
 		// Read until we hit a new line, this the length of the parameters
@@ -103,10 +102,9 @@ public class RuntimeUtils {
 	private static <T extends BaseFunction> T reflectFunction(
 			final Map<String, String> params, final String clazz) {
 		try {
-			return (T) Class.forName(clazz).getConstructor(
-					Map.class).newInstance(params);
+			return (T) Class.forName(clazz).getConstructor(Map.class).newInstance(params);
 			
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			// Reflection can throw a ton of exceptions, just catch-all and fail-fast
 			logThrowable(e);
 			System.exit(-1);
@@ -122,8 +120,7 @@ public class RuntimeUtils {
 	 * @return the constructed map function
 	 */
 	public static MapFunction reflectMapFunction(final Map<String, String> params) {
-		return RuntimeUtils.<MapFunction>reflectFunction(
-				params, params.get("mapFunction"));
+		return RuntimeUtils.<MapFunction>reflectFunction(params, params.get("mapFunction"));
 	}
 	
 	/**
@@ -134,8 +131,7 @@ public class RuntimeUtils {
 	 * @return the constructed reduce function
 	 */
 	public static ReduceFunction reflectReduceFunction(final Map<String, String> params) {
-		return RuntimeUtils.<ReduceFunction>reflectFunction(
-				params, params.get("reduceFunction"));
+		return RuntimeUtils.<ReduceFunction>reflectFunction(params, params.get("reduceFunction"));
 	}
 
 	/**

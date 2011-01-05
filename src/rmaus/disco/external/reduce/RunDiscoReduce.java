@@ -53,7 +53,7 @@ import rmaus.disco.external.utils.DiscoKeyValuePair;
  */
 public class RunDiscoReduce {
 	
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		try {
 			final Map<String, String> parameters = readParameters();
 			final ReduceFunction reduceFunction = reflectReduceFunction(parameters);
@@ -61,7 +61,8 @@ public class RunDiscoReduce {
 			final List<DiscoKeyValuePair> pairsIn = new ArrayList<DiscoKeyValuePair>();
 			
 			while (canRead(System.in)) { // Get all the keys first
-				pairsIn.add(new DiscoKeyValuePair(System.in));
+				final DiscoKeyValuePair pairIn = DiscoKeyValuePair.createFromInputStream(System.in);
+				pairsIn.add(pairIn);
 			}
 			
 			final List<DiscoKeyValuePair> results = reduceFunction.generateResultPairs(pairsIn);
@@ -71,20 +72,20 @@ public class RunDiscoReduce {
 			System.out.write(numPairsOut);
 			
 			// Write out each result key-value pair
-			for (DiscoKeyValuePair pairOut : results) {
+			for (final DiscoKeyValuePair pairOut : results) {
 				pairOut.writeOut(System.out);
 			}
 			
-		} catch (IOException ioe) {
+		} catch (final IOException ioe) {
 			logThrowable(ioe);
 			System.exit(-1);
 			
-		} catch (NumberFormatException nfe) {
+		} catch (final NumberFormatException nfe) {
 			log("Parameter input mismatch. Did you specify 'reduceFunction' in ext_params?");
 			logThrowable(nfe);
 			System.exit(-1);
 			
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			// Catch any other exceptions that have propagated up to this level,
 			// potentially from the mapping function 
 			logThrowable(e);

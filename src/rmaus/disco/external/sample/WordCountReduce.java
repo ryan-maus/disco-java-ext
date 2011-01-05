@@ -54,32 +54,34 @@ public class WordCountReduce extends ReduceFunction {
 	 * @param params
 	 *            disco ext_params
 	 */
-	public WordCountReduce(Map<String, String> parameters) {
+	public WordCountReduce(final Map<String, String> parameters) {
 		super(parameters);
 	}
 	
 	/** {@inheritDoc} */
 	@Override
-	public List<DiscoKeyValuePair> generateResultPairs(List<DiscoKeyValuePair> inputPairs) {
-		final List<DiscoKeyValuePair> ret = new ArrayList<DiscoKeyValuePair>();
-		final Map<String, Integer> stats = new HashMap<String, Integer>();
+	public List<DiscoKeyValuePair> generateResultPairs(final List<DiscoKeyValuePair> inputPairs) {
+		final List<DiscoKeyValuePair> results = new ArrayList<DiscoKeyValuePair>();
+		final Map<String, Integer> wordsToCount = new HashMap<String, Integer>();
 		
-		for (DiscoKeyValuePair pair : inputPairs) {
+		for (final DiscoKeyValuePair pair : inputPairs) {
 			final String word = pair.getKey();
 			final int count = Integer.parseInt(pair.getValue());
 			
-			if (stats.containsKey(pair.getKey())) {
-				stats.put(word, stats.get(word) + count);
+			if (wordsToCount.containsKey(pair.getKey())) {
+				wordsToCount.put(word, wordsToCount.get(word) + count);
 			} else {
-				stats.put(word, count);
+				wordsToCount.put(word, count);
 			}
 		}
 		
-		for (Map.Entry<String, Integer> entry : stats.entrySet()) {
-			ret.add(new DiscoKeyValuePair(entry.getKey(), entry.getValue().toString()));
+		for (final Map.Entry<String, Integer> entry : wordsToCount.entrySet()) {
+			final String word = entry.getKey();
+			final String count = entry.getValue().toString();
+			results.add(new DiscoKeyValuePair(word, count));
 		}
 		
-		return ret;
+		return results;
 	}
 
 }

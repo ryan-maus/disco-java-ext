@@ -39,20 +39,24 @@ import rmaus.disco.external.utils.BaseFunction;
 import rmaus.disco.external.utils.DiscoKeyValuePair;
 
 /**
- * The map function
+ * The map function. It should be noted that the map/reduce functions are loaded
+ * by reflection; during which, the constructor signature of the implementing
+ * class is expected to be identical to this abstract class's constructor. Not
+ * following this convention will cause errors in the reflection.
  * 
  * @author Ryan Maus <ryan.maus AT gmail.com>
- *
+ * 
  */
 public abstract class MapFunction extends BaseFunction {
 
 	/**
-	 * Default constructor
+	 * Default constructor. Child class constructors must match this exactly,
+	 * see above.
 	 * 
 	 * @param parameters
 	 *            disco ext_params
 	 */
-	public MapFunction(Map<String, String> parameters) {
+	public MapFunction(final Map<String, String> parameters) {
 		super(parameters);
 	}
 	

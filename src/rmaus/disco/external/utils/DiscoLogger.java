@@ -56,7 +56,7 @@ public class DiscoLogger {
 		logThrowable(err, DiscoEvent.ERR);
 	}
 	
-	public static void logThrowable(final Throwable err, DiscoEvent event) {
+	public static void logThrowable(final Throwable err, final DiscoEvent event) {
 		final StringBuilder sb = new StringBuilder();
 		sb.append(err.getCause() + " ");
 		for (StackTraceElement ste : err.getStackTrace()) {

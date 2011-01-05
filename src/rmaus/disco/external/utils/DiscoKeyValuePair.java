@@ -52,16 +52,6 @@ public class DiscoKeyValuePair {
 	private final String value;
 	
 	/**
-	 * Constructor.  Creates a key-value pair from the given input stream
-	 * @param in
-	 * @throws IOException
-	 */
-	public DiscoKeyValuePair(final InputStream in) throws IOException {
-		this.key = readSizeValuePair(in);
-		this.value = readSizeValuePair(in);
-	}
-	
-	/**
 	 * Constructor.  Creates a key-value pair from a key and value string
 	 * @param key
 	 * @param value
@@ -73,13 +63,13 @@ public class DiscoKeyValuePair {
 	
 	/**
 	 * Gets the key of this key-value pair
-	 * @return
+	 * @return the key
 	 */
 	public String getKey() { return this.key; }
 	
 	/**
 	 * Gets the value of this key-value pair
-	 * @return
+	 * @return the value
 	 */
 	public String getValue() { return this.value; }
 	
@@ -88,11 +78,34 @@ public class DiscoKeyValuePair {
 	public String toString() { return "(" + this.key + "," + this.value + ")"; }
 	
 	/**
-	 * Read a <size><value> pair from given input stream
-	 * @return value, as a string
+	 * Writes this key-value pair to given output stream in this format:
+	 * <keySize><key><valueSize><value>
+	 * @param out
 	 * @throws IOException
 	 */
-	private String readSizeValuePair(final InputStream in) throws IOException {
+	public void writeOut(final PrintStream out) throws IOException {
+		writeSizeValuePair(out, key);
+		writeSizeValuePair(out, value);
+	}
+	
+	/**
+	 * Create a key-value pair from the given input stream
+	 * @param in
+	 * @return the new key-value pair
+	 * @throws IOException
+	 */
+	public static DiscoKeyValuePair createFromInputStream(final InputStream in) throws IOException {
+		final String key = readSizeValuePair(in);
+		final String value = readSizeValuePair(in);
+		return new DiscoKeyValuePair(key, value);
+	}
+	
+	/**
+	 * Read a <size><value> pair from given input stream
+	 * @return value, as a string of length <size>
+	 * @throws IOException
+	 */
+	private static String readSizeValuePair(final InputStream in) throws IOException {
 		final byte[] valueSizeBuffer = new byte[4];
 		in.read(valueSizeBuffer);
 		final int valueSize = littleEndianBytesToBigEndianInt(valueSizeBuffer);
@@ -117,17 +130,6 @@ public class DiscoKeyValuePair {
 		final byte[] bytesOut = value.getBytes();
 		out.write(sizeOut);
 		out.write(bytesOut);
-	}
-	
-	/**
-	 * Writes this key-value pair to given output stream in this format:
-	 * <keySize><key><valueSize><value>
-	 * @param out
-	 * @throws IOException
-	 */
-	public void writeOut(final PrintStream out) throws IOException {
-		writeSizeValuePair(out, key);
-		writeSizeValuePair(out, value);
 	}
 	
 }

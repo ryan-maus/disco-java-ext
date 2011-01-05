@@ -53,20 +53,20 @@ public class WordCountMap extends MapFunction {
 	 * @param params
 	 *            disco ext_params
 	 */
-	public WordCountMap(Map<String, String> parameters) {
+	public WordCountMap(final Map<String, String> parameters) {
 		super(parameters);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public List<DiscoKeyValuePair> generateResultPair(DiscoKeyValuePair inputPair) {
-		final List<DiscoKeyValuePair> ret = new ArrayList<DiscoKeyValuePair>();
+	public List<DiscoKeyValuePair> generateResultPair(final DiscoKeyValuePair inputPair) {
+		final List<DiscoKeyValuePair> result = new ArrayList<DiscoKeyValuePair>();
 		
 		for (final String word : inputPair.getValue().split(" ")) {
-			ret.add(new DiscoKeyValuePair(word, "1"));
+			result.add(new DiscoKeyValuePair(word, "1"));
 		}
 		
-		return ret;
+		return result;
 	}
 
 }

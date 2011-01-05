@@ -60,7 +60,7 @@ public class RunDiscoMap {
 			// Iteratively read in keys and output results
 			while (canRead(System.in)) {
 				// Get the next key-value and pass it to the mapping function
-				final DiscoKeyValuePair pairIn = new DiscoKeyValuePair(System.in);
+				final DiscoKeyValuePair pairIn = DiscoKeyValuePair.createFromInputStream(System.in);
 				final List<DiscoKeyValuePair> results = mapFunction.generateResultPair(pairIn);
 				
 				// Write out how many pairs there are in the results
@@ -68,20 +68,20 @@ public class RunDiscoMap {
 				System.out.write(numPairsOut);
 				
 				// Write out each result key-value pair
-				for (DiscoKeyValuePair pairOut : results) {
+				for (final DiscoKeyValuePair pairOut : results) {
 					pairOut.writeOut(System.out);
 				}
 			}
-		} catch (IOException ioe) {
+		} catch (final IOException ioe) {
 			logThrowable(ioe);
 			System.exit(-1);
 			
-		} catch (NumberFormatException nfe) {
+		} catch (final NumberFormatException nfe) {
 			log("Parameter input mismatch. Did you specify 'mapFunction' in ext_params?");
 			logThrowable(nfe);
 			System.exit(-1);
 			
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			// Catch any other exceptions that have propagated up to this level,
 			// potentially from the mapping function 
 			logThrowable(e);

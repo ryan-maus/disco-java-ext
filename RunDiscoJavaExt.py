@@ -38,7 +38,7 @@ ext_reduce_exec = "java_reduce.sh"
 map_class = "rmaus.disco.external.sample.WordCountMap"
 reduce_class = "rmaus.disco.external.sample.WordCountReduce"
 
-job = Disco("http://discomaster-eq-02:8989").new_job(
+job = Disco("http://discomaster-dr-01:8989").new_job(
         name = "java_wordcount",
 	input = ["raw://foo", "raw://bar", "raw://foo"],
 	ext_params = { "mapFunction" : map_class, "reduceFunction" : reduce_class, "testKey" : "testValue" },
